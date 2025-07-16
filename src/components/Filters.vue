@@ -1,6 +1,7 @@
 <script setup>
 import { useProductsStore } from '../stores/products'
 const store = useProductsStore()
+
 </script>
 
 <template>
@@ -8,14 +9,7 @@ const store = useProductsStore()
         <h4 class="my-3">فیلترها</h4>
 
         <div class="mb-4">
-            <h5 class="mb-1">رنگ</h5>
-            <div class="">
-
-            </div>
-        </div>
-
-        <div class="mb-4">
-            <h5 class="mb-1">سایز</h5>
+            <h5 v-for="item in store.myArray" class="mb-1">{{ item }}</h5>
             <div class="">
 
             </div>

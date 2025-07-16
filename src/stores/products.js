@@ -18,7 +18,6 @@ export const useProductsStore = defineStore('products', () => {
             const { data } = await axios.get(
                 '/spree/products?include=images'
             );
-            console.log(data)
 
             function getImageUrls(product, included) {
                 const imageRefs = product.relationships.images?.data
@@ -36,11 +35,9 @@ export const useProductsStore = defineStore('products', () => {
                 images: getImageUrls(p, data.included),
                 price: p.attributes.display_price,
             }));
-            console.log(items.value)
 
         } catch (err) {
             error.value = err;
-            console.log(err)
         }
     }
 

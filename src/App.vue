@@ -5,7 +5,7 @@ import { RouterView } from 'vue-router'
 
 <template>
   <HeaderBar />
-  <main class="container-fluid mx-auto p-4">
+  <main class="container-fluid col-lg-11 mx-auto p-4">
     <RouterView />
   </main>
 </template>

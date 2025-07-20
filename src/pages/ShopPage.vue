@@ -9,11 +9,11 @@ onMounted(store.fetchProducts)
 </script>
 
 <template>
-    <div class="row">
-        <div class="col-3">
+    <div class="row mx-auto">
+        <div class="d-none d-lg-block col-3 p-3 rounded-3 border mt-3 h-100">
             <Filters />
         </div>
-        <div class="col-9">
+        <div class="col-12 col-lg-9">
             <ProductList :products="store.filtered" />
             <p v-if="store.error" class="text-red-600">{{ store.error.message }}</p>
         </div>

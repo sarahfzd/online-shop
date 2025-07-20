@@ -21,15 +21,20 @@ export const useProductsStore = defineStore('products', () => {
                 const imageRefs = product.relationships.images?.data
                 const urls = imageRefs.map(ref => {
                     const imageObj = included.find(i => i.id === ref.id)
-                    return imageObj?.attributes?.original_url
+                    if (!imageObj) return null
+
+                    const smallImage = imageObj.attributes.styles?.find(
+                        style => style.width === 240
+                    )
+                    return smallImage?.url || null
                 })
                 return urls
             }
 
             items.value = data.data.map(p => ({
                 id: p.id,
-                name: p.attributes.name,
-                description: p.attributes.description.substring(3, 83) + ' ...',
+                name: p.attributes.name.substring(0, 13) + '..',
+                description: p.attributes.description.substring(3, 40),
                 images: getImageUrls(p, data.included),
                 price: p.attributes.display_price,
             }));

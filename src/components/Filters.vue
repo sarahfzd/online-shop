@@ -78,13 +78,18 @@ const store = useProductsStore()
         </div>
 
         <div class="my-1 py-1 align-items-center justify-content-between form-check form-switch w-100">
-            <span class="form-check-label col" for="switchCheckDefault">ارسال امروز</span>
-            <input class="form-check-input col-1" type="checkbox" role="switch" id="switchCheckDefault">
+            <input class="form-check-input col-1" type="checkbox" role="switch" id="switchCheckShipping">
+            <label class="form-check-label col" for="switchCheckShipping">ارسال امروز</label>
         </div>
 
         <div class="my-2 py-1 form-check form-switch w-100">
+            <input class="form-check-input" type="checkbox" role="switch" id="switchCheckAvailable">
+            <label class="form-check-label" for="switchCheckAvailable">فقط کالاهای موجود</label>
+        </div>
+
+        <div class="form-check form-switch">
             <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
-            <span class="form-check-label" for="switchCheckDefault">فقط کالاهای موجود</span>
+            <label class="form-check-label" for="switchCheckDefault">Default switch checkbox input</label>
         </div>
 
         <div class="accordion accordion-flush w-100" id="accordionExample">

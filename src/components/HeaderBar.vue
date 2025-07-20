@@ -8,8 +8,8 @@ import Filters from './Filters.vue';
 <template>
     <!-- desktop menu -->
     <div class="d-none d-md-block">
-        <nav dir="rtl" class="navbar navbar-expand-lg bg-white sticky-top shadow-sm">
-            <div class="col-12 col-lg-11 mx-auto">
+        <nav dir="rtl" class="navbar navbar-expand-lg bg-white sticky-top px-lg-4">
+            <div class="col-12 col-md-11 mx-auto px-lg-2">
                 <div class="mb-2 d-flex flex-row justify-content-between align-items-center">
                     <a class="navbar-brand col" href="/">
                         <img src="/logo.png" width="150">
@@ -17,7 +17,7 @@ import Filters from './Filters.vue';
                     <form class="d-flex col-4 col=lg-5 position-relative mx-3" role="search">
                         <input v-model="store.search" class="form-control rounded-3" type="search" placeholder="جستجو"
                             aria-label="Search" />
-                        <button class="position-absolute top-0 start-0 btn" type="submit">
+                        <button class="position-absolute top-50 start-0 translate-middle-y btn" type="submit">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#A72F3B"
                                 class="bi bi-search mt-lg-1" viewBox="0 0 16 16">
                                 <path
@@ -26,7 +26,7 @@ import Filters from './Filters.vue';
                         </button>
                     </form>
                     <ul class="navbar-nav col">
-                        <div class="row">
+                        <div class="row me-auto">
                             <li class="nav-item mx-auto text-nowrap col">
                                 <a class="nav-link active d-flex align-items-center" aria-current="page" href="#">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
@@ -96,7 +96,7 @@ import Filters from './Filters.vue';
     </div>
     <!-- mobile menu -->
     <div dir="rtl" class="d-md-none">
-        <nav class="navbar fixed-top bg-white shadow-sm">
+        <nav class="navbar fixed-top bg-white">
             <div class="d-flex flex-row align-items-center justify-content-between px-0 mx-2 col-11 mx-auto">
                 <button class="btn col" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRightMenu"
                     aria-controls="offcanvasRightMenu">

@@ -1,6 +1,7 @@
 <script setup>
 import { useProductsStore } from '../stores/products'
 const store = useProductsStore()
+import Filters from './Filters.vue';
 
 </script>
 
@@ -97,8 +98,8 @@ const store = useProductsStore()
     <div dir="rtl" class="d-md-none">
         <nav class="navbar fixed-top bg-white shadow-sm">
             <div class="d-flex flex-row align-items-center justify-content-between px-0 mx-2 col-11 mx-auto">
-                <button class="btn col" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
-                    aria-controls="offcanvasRight">
+                <button class="btn col" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRightMenu"
+                    aria-controls="offcanvasRightMenu">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                         class="bi bi-list" viewBox="0 0 16 16">
                         <path fill-rule="evenodd"
@@ -106,7 +107,8 @@ const store = useProductsStore()
                     </svg>
                 </button>
 
-                <div class="offcanvas offcanvas-end w-75 p-4" tabindex="-1" id="offcanvasRight"
+                <!-- sideBar menu -->
+                <div class="offcanvas offcanvas-end w-75 p-4" tabindex="-1" id="offcanvasRightMenu"
                     aria-labelledby="offcanvasRightLabel">
                     <div class="d-flex flex-column align-items-start justify-content-between h-75 my-3">
                         <a
@@ -226,22 +228,44 @@ const store = useProductsStore()
         <div class="nav py-3 text-start col-12 col-lg-11 mx-auto">
             <ul class="align-items-center list-unstyled text-nowrap row p-0 mx-3">
 
-                <li class="nav-item col d-flex align-items-center">
+                <a class="nav-item col d-flex align-items-center text-decoration-none text-black"
+                    data-bs-toggle="offcanvas" href="#offcanvaFilter" role="button" aria-controls="offcanvasFilter">
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"
                         class="bi bi-sliders2 ms-1" viewBox="0 0 16 16">
                         <path fill-rule="evenodd"
                             d="M10.5 1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4H1.5a.5.5 0 0 1 0-1H10V1.5a.5.5 0 0 1 .5-.5M12 3.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m-6.5 2A.5.5 0 0 1 6 6v1.5h8.5a.5.5 0 0 1 0 1H6V10a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5M1 8a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2A.5.5 0 0 1 1 8m9.5 2a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V13H1.5a.5.5 0 0 1 0-1H10v-1.5a.5.5 0 0 1 .5-.5m1.5 2.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5" />
                     </svg>
                     <span>فیلتر</span>
-                </li>
-                <li class="nav-item col d-flex align-items-center">
+                </a>
+                <div class="offcanvas offcanvas-end w-75" tabindex="-1" id="offcanvaFilter"
+                    aria-labelledby="offcanvasRightLabel">
+                    <div class="offcanvas-body">
+                        <filters />
+                    </div>
+                </div>
+
+                <a class="nav-item col d-flex align-items-center text-decoration-none text-black"
+                    data-bs-toggle="offcanvas" href="#offcanvasSort" role="button" aria-controls="offcanvasSort">
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"
                         class="bi bi-filter ms-1" viewBox="0 0 16 16">
                         <path
                             d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5" />
                     </svg>
                     <span>پربازدیدترین‌ها</span>
-                </li>
+                </a>
+                <div class="offcanvas offcanvas-end w-75" tabindex="-1" id="offcanvasSort"
+                    aria-labelledby="offcanvasRightLabel">
+                    <div class="offcanvas-body">
+                        <div class="d-flex flex-column align-items-start justify-content-between w-100">
+                            <p class="my-3 fs-5 fw-bold">مرتب سازی بر اساس</p>
+                            <p class="my-3">پربازدیدترین‌ها</p>
+                            <p class="my-3">جدیدترین</p>
+                            <p class="my-3">پرفروش‌ترین</p>
+                            <p class="my-3">گران‌ترین</p>
+                            <p class="my-3">ارزان‌ترین</p>
+                        </div>
+                    </div>
+                </div>
             </ul>
         </div>
     </div>

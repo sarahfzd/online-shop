@@ -1,5 +1,6 @@
 <script setup>
 import ProductCard from './ProductCard.vue'
+import Pagination from './Pagination.vue'
 defineProps({ products: Array })
 </script>
 
@@ -19,6 +20,9 @@ defineProps({ products: Array })
     <div class="col-6 col-md-4 mb-4" v-for="p in products" :key="p.id">
       <ProductCard :product="p" />
     </div>
+  </div>
+  <div class="">
+    <Pagination/>
   </div>
 </template>
 

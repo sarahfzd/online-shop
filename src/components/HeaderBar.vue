@@ -272,7 +272,7 @@ import Filters from './Filters.vue';
 
 <style scoped>
 input::placeholder {
-    color: #A72F3B;
+    color: #a72f3b;
 }
 
 .nav {

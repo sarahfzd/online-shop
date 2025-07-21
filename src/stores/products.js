@@ -8,14 +8,21 @@ export const useProductsStore = defineStore('products', () => {
     const error = ref(null)
     const search = ref('')
     const filterOptions = ref([])
+    const pagesCount = ref()
+    const wantedPage = ref(1)
     const myArray = [];
+
+    watch(wantedPage, () => {
+        fetchProducts()
+    })
 
     async function fetchProducts() {
         try {
             const { data } = await axios.get(
-                '/spree/products?include=images'
+                '/spree/products?include=images&page=' + wantedPage.value
             );
             filterOptions.value = data.meta.filters.option_types
+            pagesCount.value = data.meta.total_pages
 
             function getImageUrls(product, included) {
                 const imageRefs = product.relationships.images?.data
@@ -58,6 +65,8 @@ export const useProductsStore = defineStore('products', () => {
         search,
         filtered,
         filterOptions,
+        pagesCount,
+        wantedPage,
         myArray,
         fetchProducts
     }

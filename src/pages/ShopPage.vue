@@ -13,7 +13,7 @@ onMounted(store.fetchProducts)
         <div class="d-none d-md-block col-3 p-3 rounded-3 border mt-3 h-100">
             <Filters />
         </div>
-        <div class="col-12 col-md-9 mt-3">
+        <div class="col-12 col-md-9 mt-3 ps-0">
             <ProductList :products="store.filtered" />
             <p v-if="store.error" class="text-red-600">{{ store.error.message }}</p>
         </div>

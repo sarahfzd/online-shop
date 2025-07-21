@@ -7,14 +7,14 @@ import Filters from './Filters.vue';
 
 <template>
     <!-- desktop menu -->
-    <div class="d-none d-md-block">
-        <nav dir="rtl" class="navbar navbar-expand-lg bg-white sticky-top px-lg-4">
-            <div class="col-12 col-md-11 mx-auto px-lg-2">
+    <div class="d-none d-md-block container-fluid col-lg-11 mx-auto">
+        <nav dir="rtl" class="navbar navbar-expand-lg bg-white sticky-top col-12">
+            <div class="col-12">
                 <div class="mb-2 d-flex flex-row justify-content-between align-items-center">
                     <a class="navbar-brand col" href="/">
                         <img src="/logo.png" width="150">
                     </a>
-                    <form class="d-flex col-4 col=lg-5 position-relative mx-3" role="search">
+                    <form class="d-flex col-4 col-lg-5 position-relative mx-3" role="search">
                         <input v-model="store.search" class="form-control rounded-3" type="search" placeholder="جستجو"
                             aria-label="Search" />
                         <button class="position-absolute top-50 start-0 translate-middle-y btn" type="submit">
@@ -25,7 +25,7 @@ import Filters from './Filters.vue';
                             </svg>
                         </button>
                     </form>
-                    <ul class="navbar-nav col">
+                    <ul class="navbar-nav col p-0">
                         <div class="row me-auto">
                             <li class="nav-item mx-auto text-nowrap col">
                                 <a class="nav-link active d-flex align-items-center" aria-current="page" href="#">
@@ -58,9 +58,9 @@ import Filters from './Filters.vue';
                 </div>
             </div>
         </nav>
-        <div class="my-2 py-3 text-center col-12 col-lg-11 mx-auto">
-            <ul class="align-items-center list-unstyled text-nowrap row p-0 mx-3">
-                <li class="d-flex align-items-center justify-content-center nav-item btn-red btn col">
+        <div class="my-2 py-3 px-2 text-center col-12">
+            <ul class="align-items-center list-unstyled text-nowrap row px-1">
+                <li class="d-flex align-items-center justify-content-center nav-item btn-red p-2 rounded-3 col">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-magic ms-1"
                         viewBox="0 0 16 16">
                         <path
@@ -227,7 +227,6 @@ import Filters from './Filters.vue';
         </nav>
         <div class="nav py-3 text-start col-12 col-lg-11 mx-auto">
             <ul class="align-items-center list-unstyled text-nowrap row p-0 mx-3">
-
                 <a class="nav-item col d-flex align-items-center text-decoration-none text-black"
                     data-bs-toggle="offcanvas" href="#offcanvaFilter" role="button" aria-controls="offcanvasFilter">
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"

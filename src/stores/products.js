@@ -19,16 +19,16 @@ export const useProductsStore = defineStore('products', () => {
 
             function getImageUrls(product, included) {
                 const imageRefs = product.relationships.images?.data
-                const urls = imageRefs.map(ref => {
+                return imageRefs.map(ref => {
                     const imageObj = included.find(i => i.id === ref.id)
-                    if (!imageObj) return null
+                    const styles = imageObj.attributes.styles
 
-                    const smallImage = imageObj.attributes.styles?.find(
-                        style => style.width === 240
-                    )
-                    return smallImage?.url || null
+                    return {
+                        id: imageObj.id,
+                        list: styles[0].url,
+                        card: styles[2].url,
+                    }
                 })
-                return urls
             }
 
             items.value = data.data.map(p => ({

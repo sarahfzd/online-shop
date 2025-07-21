@@ -4,7 +4,7 @@ defineProps({ product: Object })
 
 <template>
     <div dir="ltr" class="product-card text-start h-100 border rounded-3 p-3 bg-white">
-        <img :src="product.images[0]" class="w-100 rounded">
+        <img :src="product.images[0].card" class="w-100 rounded">
         <div class="d-flex flex-row align-items-center justify-content-between">
             <p class="my-2 mb-1 fw-bold title">{{ product.name }}</p>
             <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-heart"
@@ -17,4 +17,3 @@ defineProps({ product: Object })
         <p class="my-2 text-end">{{ product.price }}</p>
     </div>
 </template>
-

@@ -105,9 +105,14 @@
         background-color: #641C23;
     }
 
+    input::placeholder {
+        color: #dededed2;
+    }
+
     input {
         background-color: #00ffff00;
         border: 2px solid white;
+        color: white;
     }
 
     button {

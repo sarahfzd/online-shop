@@ -8,6 +8,11 @@ export const useProductsStore = defineStore('products', () => {
     const error = ref(null)
     const search = ref('')
     const filterOptions = ref([])
+    const colors = ref()
+    const sizes = ref()
+    const selectedColors = ref([])
+    const selectedSizes = ref([])
+    const onlyAvailable = ref(false)
     const pagesCount = ref()
     const wantedPage = ref(1)
     const myArray = [];
@@ -18,17 +23,36 @@ export const useProductsStore = defineStore('products', () => {
 
     async function fetchProducts() {
         try {
-            const { data } = await axios.get(
-                '/spree/products?include=images&page=' + wantedPage.value
-            );
+            let url = '/spree/products?include=images&page=' + wantedPage.value;
+
+            const colorFilter = selectedColors.value.length
+                ? `&filter[option_types][color]=${selectedColors.value.join(',')}`
+                : '';
+
+            const sizeFilter = selectedSizes.value.length
+                ? `&filter[option_types][size]=${selectedSizes.value.join(',')}`
+                : '';
+
+            const availabilityFilter = onlyAvailable.value
+                ? '&filter[available]=true'
+                : ''
+
+            url += colorFilter + sizeFilter + availabilityFilter;
+
+            console.log("Final API URL:", url)
+            const { data } = await axios.get(url);
+
             filterOptions.value = data.meta.filters.option_types
+            colors.value = filterOptions.value.find(i => i.name === 'color').option_values;
+            sizes.value = filterOptions.value.find(i => i.name === 'size').option_values;
             pagesCount.value = data.meta.total_pages
 
             function getImageUrls(product, included) {
                 const imageRefs = product.relationships.images?.data
                 return imageRefs.map(ref => {
                     const imageObj = included.find(i => i.id === ref.id)
-                    const styles = imageObj.attributes.styles
+                    const attributes = imageObj.attributes
+                    const styles = attributes.styles
 
                     return {
                         id: imageObj.id,
@@ -65,6 +89,11 @@ export const useProductsStore = defineStore('products', () => {
         search,
         filtered,
         filterOptions,
+        colors,
+        sizes,
+        selectedColors,
+        selectedSizes,
+        onlyAvailable,
         pagesCount,
         wantedPage,
         myArray,

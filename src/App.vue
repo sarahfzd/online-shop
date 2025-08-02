@@ -11,3 +11,9 @@ import Footer from './components/Footer.vue'
   </main>
   <Footer />
 </template>
+
+<style scoped>
+.container-fluid {
+  min-height: 60vh;
+}
+</style>

@@ -1,6 +1,8 @@
 <script setup>
 import { useProductsStore } from '../stores/products'
+import { useCartStore } from '../stores/cart'
 const store = useProductsStore()
+const cart = useCartStore();
 import Filters from './Filters.vue';
 
 </script>
@@ -42,7 +44,10 @@ import Filters from './Filters.vue';
                                 </a>
                             </li>
                             <li class="nav-item mx-auto text-nowrap col">
-                                <a class="nav-link active d-flex align-items-center" href="/cart">
+                                <a class="nav-link active d-flex align-items-center position-relative" href="/cart">
+                                    <span class="position-absolute top-0 end-0 badge rounded-circle">
+                                        {{ cart.totalCount }}
+                                    </span>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
                                         class="bi bi-cart ms-1" viewBox="0 0 16 16">
                                         <path
@@ -281,5 +286,9 @@ input::placeholder {
 
 .offcanvas {
     font-size: calc(12px + 0.390625vw);
+}
+
+.badge {
+    background-color: #DCACB1;
 }
 </style>

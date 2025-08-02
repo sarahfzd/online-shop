@@ -9,6 +9,7 @@ import ProductList from '../components/ProductList.vue'
 const route = useRoute()
 const router = useRouter()
 const store = useProductsStore()
+
 onMounted(() => {
     const query = route.query
 

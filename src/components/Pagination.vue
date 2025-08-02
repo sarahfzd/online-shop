@@ -4,6 +4,7 @@ const store = useProductsStore()
 
 function getPage(n) {
     store.wantedPage = n
+    store.fetchProducts()
 }
 </script>
 

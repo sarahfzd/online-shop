@@ -15,7 +15,9 @@ export const useProductsStore = defineStore('products', () => {
     const onlyAvailable = ref(false)
     const pagesCount = ref()
     const wantedPage = ref(1)
+    const sortOrder = ref(null)
     const myArray = [];
+    const priceRange = ref([0, 9999])
 
     watch(wantedPage, () => {
         fetchProducts()
@@ -23,18 +25,30 @@ export const useProductsStore = defineStore('products', () => {
 
     async function fetchProducts() {
         try {
-            let url = '/spree/products?include=images&page=' + wantedPage.value;
+            let url = `/spree/products?include=images&page=${wantedPage.value}`;
+
+            if (sortOrder.value) {
+                url += `&sort=${sortOrder.value}`
+            }
+            // if (sortType === 'newest') {
+            //     url += '&sort=updated_at'
+            // } else if (sortType === 'highToLow') {
+            //     url += '&sort=-price'
+            // } else if (sortType === 'lowToHigh') {
+            //     url += '&sort=price'
+            // }
 
             const colorFilter = selectedColors.value.length
-                ? `&filter[option_types][color]=${selectedColors.value.join(',')}`
+                ? `& filter[options][color]= ${selectedColors.value.join(',')
+                }`
                 : '';
 
             const sizeFilter = selectedSizes.value.length
-                ? `&filter[option_types][size]=${selectedSizes.value.join(',')}`
+                ? `& filter[options][size]=${selectedSizes.value.join(',')} `
                 : '';
 
             const availabilityFilter = onlyAvailable.value
-                ? '&filter[available]=true'
+                ? '&filter[in_stock]=true'
                 : ''
 
             url += colorFilter + sizeFilter + availabilityFilter;
@@ -64,10 +78,11 @@ export const useProductsStore = defineStore('products', () => {
 
             items.value = data.data.map(p => ({
                 id: p.id,
-                name: p.attributes.name.substring(0, 13) + '..',
+                name: p.attributes.name,
                 description: p.attributes.description.substring(3, 40),
                 images: getImageUrls(p, data.included),
                 price: p.attributes.display_price,
+                cartPrice: Number(p.attributes.price)
             }));
 
         } catch (err) {
@@ -77,6 +92,7 @@ export const useProductsStore = defineStore('products', () => {
 
     const filtered = computed(() =>
         items.value.filter(p => {
+            // const price = p.price >= priceRange.value[0] && p.price <= priceRange.value[1];
             const inText = p.name.toLowerCase().includes(search.value.toLowerCase());
             return inText;
         })
@@ -96,6 +112,8 @@ export const useProductsStore = defineStore('products', () => {
         onlyAvailable,
         pagesCount,
         wantedPage,
+        // priceRange,
+        sortOrder,
         myArray,
         fetchProducts
     }

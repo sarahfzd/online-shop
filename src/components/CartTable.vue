@@ -49,13 +49,16 @@ const totalPrice = computed(() => {
             <button class="btn btn-outline-secondary me-2" @click="decreaseQuantity(item)">−</button>
             <span>{{ item.quantity }}</span>
             <button class="btn btn-outline-secondary ms-2" @click="increaseQuantity(item)">+</button>
-            <button class="btn btn-danger ms-3" @click="removeItem(item.id)">Remove</button>
+            <button class="btn btn-red text-white ms-3" @click="removeItem(item.id)">Remove</button>
           </div>
         </div>
       </div>
 
-      <div class="text-end mt-4">
-        <h4>Subtotal ({{ cart.totalCount }} items): {{ totalPrice.toFixed(2) }} $</h4>
+      <div class="text-start mt-4">
+        <h5>Subtotal ({{ cart.totalCount }} items): {{ totalPrice.toFixed(2) }} $</h5>
+      </div>
+      <div class="text-end mt-3">
+        <button class="col-3 btn-red text-white p-2 border-0 rounded-3 fs-5">Checkout</button>
       </div>
     </div>
   </div>

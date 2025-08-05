@@ -8,10 +8,10 @@ export const useProductsStore = defineStore('products', () => {
     const error = ref(null)
     const search = ref('')
     const filterOptions = ref([])
-    const colors = ref()
-    const sizes = ref()
-    const selectedColors = ref([])
-    const selectedSizes = ref([])
+    // const colors = ref()
+    // const sizes = ref()
+    const selectedFilters = ref({})
+    // const selectedSizes = ref([])
     const onlyAvailable = ref(false)
     const pagesCount = ref()
     const wantedPage = ref(1)
@@ -23,6 +23,25 @@ export const useProductsStore = defineStore('products', () => {
         fetchProducts()
     })
 
+    function toggleFilterOption(optionTypeName, optionValueName) {
+        if (!selectedFilters.value[optionTypeName]) {
+            selectedFilters.value[optionTypeName] = []
+        }
+
+        const index = selectedFilters.value[optionTypeName].indexOf(optionValueName)
+
+        if (index === -1) {
+            selectedFilters.value[optionTypeName].push(optionValueName)
+        } else {
+            selectedFilters.value[optionTypeName].splice(index, 1)
+            if (selectedFilters.value[optionTypeName].length === 0) {
+                delete selectedFilters.value[optionTypeName]
+            }
+        }
+
+        fetchProducts()
+    }
+
     async function fetchProducts() {
         try {
             let url = `/spree/products?include=images&page=${wantedPage.value}`;
@@ -30,35 +49,31 @@ export const useProductsStore = defineStore('products', () => {
             if (sortOrder.value) {
                 url += `&sort=${sortOrder.value}`
             }
-            // if (sortType === 'newest') {
-            //     url += '&sort=updated_at'
-            // } else if (sortType === 'highToLow') {
-            //     url += '&sort=-price'
-            // } else if (sortType === 'lowToHigh') {
-            //     url += '&sort=price'
-            // }
 
-            const colorFilter = selectedColors.value.length
-                ? `& filter[options][color]= ${selectedColors.value.join(',')
-                }`
-                : '';
+            const filterQuery = Object.entries(selectedFilters.value).map(([type, values]) => {
+                if (Array.isArray(values)) {
+                    return `&filter[options][${type}]=${values.join(',')}`
+                }
+                return ''
+            }).join('')
 
-            const sizeFilter = selectedSizes.value.length
-                ? `& filter[options][size]=${selectedSizes.value.join(',')} `
-                : '';
+            // const filterQuery = selectedFilters.value.length
+            //     ? `& filter[options][size]=${selectedFilters.value.join(',')} `
+            //     : '';
+            // console.log(filterQuery)
 
             const availabilityFilter = onlyAvailable.value
                 ? '&filter[in_stock]=true'
                 : ''
 
-            url += colorFilter + sizeFilter + availabilityFilter;
+            url += filterQuery + availabilityFilter;
 
             console.log("Final API URL:", url)
             const { data } = await axios.get(url);
 
             filterOptions.value = data.meta.filters.option_types
-            colors.value = filterOptions.value.find(i => i.name === 'color').option_values;
-            sizes.value = filterOptions.value.find(i => i.name === 'size').option_values;
+            // colors.value = filterOptions.value.find(i => i.name === 'color').option_values;
+            // sizes.value = filterOptions.value.find(i => i.name === 'size').option_values;
             pagesCount.value = data.meta.total_pages
 
             function getImageUrls(product, included) {
@@ -105,10 +120,11 @@ export const useProductsStore = defineStore('products', () => {
         search,
         filtered,
         filterOptions,
-        colors,
-        sizes,
-        selectedColors,
-        selectedSizes,
+        // colors,
+        // sizes,
+        selectedFilters,
+        toggleFilterOption,
+        // selectedSizes,
         onlyAvailable,
         pagesCount,
         wantedPage,

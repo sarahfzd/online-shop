@@ -11,28 +11,46 @@ const router = useRouter()
 const store = useProductsStore()
 
 onMounted(() => {
-    const query = route.query
+    const filters = {}
 
-    if (query.color) {
-        store.selectedColors = Array.isArray(query.color) ? query.color : [query.color]
+    for (const key in route.query) {
+        const match = key.match(/^filter\[options]\[(.+)\]$/)
+        if (match && match[1]) {
+            const filterName = match[1]
+            const value = route.query[key]
+
+            if (typeof value === 'string') {
+                filters[filterName] = value.split(',')
+            } else if (Array.isArray(value)) {
+                filters[filterName] = value
+            }
+        }
     }
-    if (query.size) {
-        store.selectedSizes = Array.isArray(query.size) ? query.size : [query.size]
-    }
-    if (query.available === 'true') {
+
+    store.selectedFilters = filters
+
+    if (route.query.available === 'true') {
         store.onlyAvailable = true
     }
 
     store.fetchProducts()
 })
+
 watch(
-    [() => store.selectedColors, () => store.selectedSizes, () => store.onlyAvailable],
+    [() => store.selectedFilters, () => store.onlyAvailable],
     () => {
-        const query = {
-            ...(store.selectedColors.length && { color: store.selectedColors }),
-            ...(store.selectedSizes.length && { size: store.selectedSizes }),
-            ...(store.onlyAvailable && { available: 'true' })
+        const query = {}
+
+        for (const [key, values] of Object.entries(store.selectedFilters)) {
+            if (Array.isArray(values) && values.length > 0) {
+                query[`filter[options][${key}]`] = values.join(',')
+            }
         }
+
+        if (store.onlyAvailable) {
+            query.available = 'true'
+        }
+
         router.replace({ path: route.path, query })
     },
     { deep: true }

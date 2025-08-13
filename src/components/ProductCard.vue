@@ -2,7 +2,6 @@
 import { useCartStore } from '../stores/cart'
 import { ref, onMounted, watch, toRefs, computed } from 'vue'
 
-// defineProps({ product: Object })
 const props = defineProps({ product: Object })
 const { product } = toRefs(props)
 
@@ -10,16 +9,10 @@ const cart = useCartStore();
 const quantity = computed(() => cart.getQuantity(product.value.id))
 const isInCart = computed(() => quantity.value > 0)
 
-let deleteModal = ref(null);
-// let modalInstance;
+// console.log(product.value.images)
 
 onMounted(() => {
     quantity.value = cart.getQuantity(product.value.id);
-
-    // modalInstance = new bootstrap.Modal(deleteModal.value, {
-    //     backdrop: 'static',
-    //     keyboard: false
-    // });
 });
 
 watch(quantity, (newVal) => {
@@ -30,7 +23,7 @@ watch(quantity, (newVal) => {
 
 function addToCart() {
     cart.addToCart(product.value)
-    quantity.value = cart.getQuantity(product.value.id)
+    // quantity.value = cart.getQuantity(product.value.id)
 }
 
 function increaseQuantity() {
@@ -47,14 +40,12 @@ function decreaseQuantity() {
     } else {
         cart.removeFromCart(product.value.id)
         quantity.value = 0
-        // modalInstance.show()
     }
 }
 
 function confirmDelete() {
     cart.removeFromCart(product.value.id)
     quantity.value = 0
-    // modalInstance.hide()
 }
 </script>
 

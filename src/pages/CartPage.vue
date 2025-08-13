@@ -9,7 +9,7 @@ import CartTable from '../components/CartTable.vue'
 </template>
 
 <style scoped>
-.main {
+/* .main {
     height: 60vh;
-}
+} */
 </style>

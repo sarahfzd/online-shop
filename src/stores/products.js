@@ -8,12 +8,12 @@ export const useProductsStore = defineStore('products', () => {
     const error = ref(null)
     const search = ref('')
     const filterOptions = ref([])
-    // const colors = ref()
-    // const sizes = ref()
     const selectedFilters = ref({})
-    // const selectedSizes = ref([])
     const onlyAvailable = ref(false)
     const pagesCount = ref()
+    const currentPage = ref(1)
+    const allItems = ref()
+    const itemsPerPage = 12
     const wantedPage = ref(1)
     const sortOrder = ref(null)
     const myArray = [];
@@ -44,7 +44,7 @@ export const useProductsStore = defineStore('products', () => {
 
     async function fetchProducts() {
         try {
-            let url = `/spree/products?include=images&page=${wantedPage.value}`;
+            let url = `/spree/products?include=images`;
 
             if (sortOrder.value) {
                 url += `&sort=${sortOrder.value}`
@@ -57,11 +57,6 @@ export const useProductsStore = defineStore('products', () => {
                 return ''
             }).join('')
 
-            // const filterQuery = selectedFilters.value.length
-            //     ? `& filter[options][size]=${selectedFilters.value.join(',')} `
-            //     : '';
-            // console.log(filterQuery)
-
             const availabilityFilter = onlyAvailable.value
                 ? '&filter[in_stock]=true'
                 : ''
@@ -72,9 +67,22 @@ export const useProductsStore = defineStore('products', () => {
             const { data } = await axios.get(url);
 
             filterOptions.value = data.meta.filters.option_types
-            // colors.value = filterOptions.value.find(i => i.name === 'color').option_values;
-            // sizes.value = filterOptions.value.find(i => i.name === 'size').option_values;
-            pagesCount.value = data.meta.total_pages
+
+            // 
+            // 
+            // 
+            // 
+            // allItems.value = data.meta.total_count;
+            // pagesCount.value = Math.floor(allItems.value / itemsPerPage);
+            // const start = (currentPage.value - 1) * itemsPerPage
+            // const end = start + itemsPerPage
+            // items.value = items.value.slice(start, end);
+
+            // function paginatedItems() {
+            //     const start = (currentPage.value - 1) * itemsPerPage
+            //     const end = start + itemsPerPage
+            //     return items.value.slice(start, end)
+            // }
 
             function getImageUrls(product, included) {
                 const imageRefs = product.relationships.images?.data
@@ -120,11 +128,8 @@ export const useProductsStore = defineStore('products', () => {
         search,
         filtered,
         filterOptions,
-        // colors,
-        // sizes,
         selectedFilters,
         toggleFilterOption,
-        // selectedSizes,
         onlyAvailable,
         pagesCount,
         wantedPage,

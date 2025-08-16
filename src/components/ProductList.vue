@@ -7,7 +7,7 @@ defineProps({ products: Array })
 
 function setSort(value) {
   store.sortOrder = value
-  store.wantedPage = 1
+  // store.wantedPage = 1
   store.fetchProducts()
 }
 

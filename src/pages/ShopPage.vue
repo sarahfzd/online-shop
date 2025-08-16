@@ -10,17 +10,16 @@ const route = useRoute()
 const router = useRouter()
 const store = useProductsStore()
 
-onMounted(() => {
+function parseFiltersFromUrl() {
+    const queryString = location.search.slice(1)
+    const parsed = qs.parse(queryString)
+
     const filters = {}
 
-    for (const key in route.query) {
-        const match = key.match(/^filter\[options]\[(.+)\]$/)
-        if (match && match[1]) {
-            const filterName = match[1]
-            const value = route.query[key]
-
-            if (typeof value === 'string') {
-                filters[filterName] = value.split(',')
+    if (parsed.filter?.options) {
+        for (const [filterName, value] of Object.entries(parsed.filter.options)) {
+            if (typeof value === "string") {
+                filters[filterName] = value.split(",")
             } else if (Array.isArray(value)) {
                 filters[filterName] = value
             }
@@ -28,30 +27,42 @@ onMounted(() => {
     }
 
     store.selectedFilters = filters
+    store.onlyAvailable = parsed.available === "true"
+    store.sortOrder = parsed.sort || null
+}
 
-    if (route.query.available === 'true') {
-        store.onlyAvailable = true
-    }
-
+onMounted(() => {
+    parseFiltersFromUrl()
     store.fetchProducts()
 })
 
 watch(
-    [() => store.selectedFilters, () => store.onlyAvailable],
+    [() => store.selectedFilters, () => store.onlyAvailable, () => store.sortOrder],
     () => {
-        const query = {}
+        const queryObj = {
+            filter: {
+                options: {}
+            }
+        }
 
         for (const [key, values] of Object.entries(store.selectedFilters)) {
             if (Array.isArray(values) && values.length > 0) {
-                query[`filter[options][${key}]`] = values.join(',')
+                queryObj.filter.options[key] = values.join(",")
             }
         }
 
         if (store.onlyAvailable) {
-            query.available = 'true'
+            queryObj.available = "true"
         }
 
-        router.replace({ path: route.path, query })
+        if (store.sortOrder) {
+            queryObj.sort = store.sortOrder
+        }
+
+        const queryString = qs.stringify(queryObj, { encode: false })
+        const newUrl = `${location.pathname}?${queryString}`
+
+        window.history.replaceState({}, "", newUrl)
     },
     { deep: true }
 )

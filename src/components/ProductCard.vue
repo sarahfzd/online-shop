@@ -9,44 +9,22 @@ const cart = useCartStore();
 const quantity = computed(() => cart.getQuantity(product.value.id))
 const isInCart = computed(() => quantity.value > 0)
 
-// console.log(product.value.images)
-
 onMounted(() => {
     quantity.value = cart.getQuantity(product.value.id);
 });
 
-watch(quantity, (newVal) => {
-    if (newVal > 0) {
-        cart.setQuantity(product.value.id, newVal)
-    }
-});
-
 function addToCart() {
     cart.addToCart(product.value)
-    // quantity.value = cart.getQuantity(product.value.id)
 }
 
 function increaseQuantity() {
-    const current = cart.getQuantity(product.value.id)
-    cart.setQuantity(product.value.id, current + 1)
-    quantity.value = current + 1
+    cart.setQuantity(product.value.id, 1)
 }
 
 function decreaseQuantity() {
-    const current = cart.getQuantity(product.value.id)
-    if (current > 1) {
-        cart.setQuantity(product.value.id, current - 1)
-        quantity.value = current - 1
-    } else {
-        cart.removeFromCart(product.value.id)
-        quantity.value = 0
-    }
+    cart.setQuantity(product.value.id, -1)
 }
 
-function confirmDelete() {
-    cart.removeFromCart(product.value.id)
-    quantity.value = 0
-}
 </script>
 
 <template>
@@ -95,21 +73,6 @@ function confirmDelete() {
             </div>
         </div>
     </div>
-
-    <!-- <div ref="deleteModal" class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
-        tabindex="-1" aria-labelledby="staticBackdropLabel">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body">
-                    آیا از حذف این محصول اطمینان دارید؟
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
-                    <button @click="confirmDelete" type="button" class="btn btn-primary">حذف از سبد خرید</button>
-                </div>
-            </div>
-        </div>
-    </div> -->
 
 </template>
 

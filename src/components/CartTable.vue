@@ -4,15 +4,11 @@ import { computed } from 'vue'
 const cart = useCartStore();
 
 function increaseQuantity(item) {
-  cart.setQuantity(item.id, item.quantity + 1)
+  cart.setQuantity(item.id, 1)
 }
 
 function decreaseQuantity(item) {
-  if (item.quantity > 1) {
-    cart.setQuantity(item.id, item.quantity - 1)
-  } else {
-    cart.removeFromCart(item.id)
-  }
+  cart.setQuantity(item.id, -1)
 }
 
 function removeItem(id) {

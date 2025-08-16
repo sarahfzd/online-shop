@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed, watch, reactive } from 'vue'
 import axios from 'axios'
+import qs from 'qs'
 
 export const useProductsStore = defineStore('products', () => {
 
@@ -19,9 +20,9 @@ export const useProductsStore = defineStore('products', () => {
     const myArray = [];
     const priceRange = ref([0, 9999])
 
-    watch(wantedPage, () => {
-        fetchProducts()
-    })
+    // watch(wantedPage, () => {
+    //     fetchProducts()
+    // })
 
     function toggleFilterOption(optionTypeName, optionValueName) {
         if (!selectedFilters.value[optionTypeName]) {
@@ -44,32 +45,32 @@ export const useProductsStore = defineStore('products', () => {
 
     async function fetchProducts() {
         try {
-            let url = `/spree/products?include=images`;
-
-            if (sortOrder.value) {
-                url += `&sort=${sortOrder.value}`
+            const queryObj = {
+                include: "images",
+                filter: { options: {} }
             }
 
-            const filterQuery = Object.entries(selectedFilters.value).map(([type, values]) => {
-                if (Array.isArray(values)) {
-                    return `&filter[options][${type}]=${values.join(',')}`
+            if (sortOrder.value) {
+                queryObj.sort = sortOrder.value
+            }
+
+            for (const [type, values] of Object.entries(selectedFilters.value)) {
+                if (Array.isArray(values) && values.length > 0) {
+                    queryObj.filter.options[type] = values.join(",")
                 }
-                return ''
-            }).join('')
+            }
 
-            const availabilityFilter = onlyAvailable.value
-                ? '&filter[in_stock]=true'
-                : ''
+            if (onlyAvailable.value) {
+                queryObj.filter.in_stock = true
+            }
 
-            url += filterQuery + availabilityFilter;
+            const queryString = qs.stringify(queryObj, { encode: false })
+            const url = `/spree/products?${queryString}`
 
             console.log("Final API URL:", url)
+
             const { data } = await axios.get(url);
 
-            filterOptions.value = data.meta.filters.option_types
-
-            // 
-            // 
             // 
             // 
             // allItems.value = data.meta.total_count;
@@ -83,6 +84,8 @@ export const useProductsStore = defineStore('products', () => {
             //     const end = start + itemsPerPage
             //     return items.value.slice(start, end)
             // }
+
+            filterOptions.value = data.meta.filters.option_types
 
             function getImageUrls(product, included) {
                 const imageRefs = product.relationships.images?.data
@@ -107,6 +110,8 @@ export const useProductsStore = defineStore('products', () => {
                 price: p.attributes.display_price,
                 cartPrice: Number(p.attributes.price)
             }));
+
+            console.log(sortOrder.value)
 
         } catch (err) {
             error.value = err;

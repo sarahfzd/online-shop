@@ -27,7 +27,7 @@ export const useCartStore = defineStore('cart', () => {
         if (item) {
             item.quantity += quantity
             if (item.quantity < 1) {
-                removeFromCart(item.value.id)
+                removeFromCart(item.id)
             }
         }
     }

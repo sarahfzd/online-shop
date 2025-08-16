@@ -16,7 +16,6 @@ function removeItem(id) {
 }
 
 const totalPrice = computed(() => {
-  console.log(cart.items)
   return cart.items.reduce((sum, item) => sum + item.cartPrice * item.quantity, 0)
 })
 </script>

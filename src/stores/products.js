@@ -77,7 +77,6 @@ export const useProductsStore = defineStore('products', () => {
             // pagesCount.value = Math.floor(allItems.value / itemsPerPage);
             // const start = (currentPage.value - 1) * itemsPerPage
             // const end = start + itemsPerPage
-            // items.value = items.value.slice(start, end);
 
             // function paginatedItems() {
             //     const start = (currentPage.value - 1) * itemsPerPage
